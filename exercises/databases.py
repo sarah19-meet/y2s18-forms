@@ -8,12 +8,25 @@ Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-def add_student(name, year, finished_lab):
+def add_student(name, year, finished_lab,methods=["GET","POST"]):
 	"""
-	Add a student to the database, given
-	their name, year, and whether they have
-	finished the lab.
+	   
 	"""
+
+	if request.method=="GET":
+		return render_template('student.html', student=query_by_id(student_id))
+	else:
+		name=request.form["name"]
+		year=request.form["year"]
+
+
+		save_to_database(name,year)
+	return render_template("home.html",
+		n=name,
+		y=year)	
+    
+
+
 	student_object = Student(
 		name=name,
 		year=year,
